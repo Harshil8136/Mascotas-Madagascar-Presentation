@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-forest-900 text-white antialiased overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-glass-100 backdrop-blur-md border border-white/10 transform-gpu;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-neon-400;
+  }
+
+  .btn-glow {
+    @apply relative px-8 py-3 bg-neon-500 text-forest-900 font-bold rounded-full transition-all duration-300 hover:shadow-glow hover:scale-105 active:scale-95;
+  }
+}
