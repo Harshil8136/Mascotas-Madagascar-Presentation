@@ -128,8 +128,8 @@ const CoreArchitecture = () => {
             techTitle: 'Server-Side Rendering',
             techDesc: 'Hybrid rendering strategy delivering instant First Contentful Paint (FCP) via server-generated HTML, followed by client-side hydration for interactivity.',
             tags: ['React 18', 'Hydration', 'Tailwind'],
-            stat1: { value: '< 0.8s', label: 'Time to Interactive' },
-            stat2: { value: '100%', label: 'SEO Indexability' }
+            stat1: { value: '< 1.2s', label: 'LCP Score' },
+            stat2: { value: '0.01', label: 'CLS Stability' }
         },
         {
             id: 'gateway',
@@ -163,6 +163,17 @@ const CoreArchitecture = () => {
             tags: ['Redis', 'In-Memory', 'Atomic'],
             stat1: { value: '< 2ms', label: 'Read/Write Latency' },
             stat2: { value: '99.9%', label: 'Uptime SLA' }
+        },
+        {
+            id: 'admin',
+            title: 'Admin Console',
+            subtitle: 'Operational Layer',
+            icon: <Database size={24} />,
+            techTitle: 'Zero-Build Architecture',
+            techDesc: 'A lightweight, offline-first admin interface built with Preact and IndexedDB. Allows for instant content updates via Vercel KV without full deployments.',
+            tags: ['Preact', 'IndexedDB', 'Vercel KV'],
+            stat1: { value: '100%', label: 'Offline Capable' },
+            stat2: { value: '< 50kb', label: 'Bundle Size' }
         }
     ];
 

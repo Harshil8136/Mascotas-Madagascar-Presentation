@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Layout, Shield, Calendar, Terminal, Code, CheckCircle, Lock, Zap, Database } from 'lucide-react';
+import { Brain, Layout, Shield, Calendar, Terminal, Code, CheckCircle, Lock, Zap, Database, Globe } from 'lucide-react';
 
 const tabs = [
     { id: 'ai', label: 'Neural Core', icon: Brain },
@@ -8,6 +8,7 @@ const tabs = [
     { id: 'admin', label: 'Admin Power', icon: Terminal },
     { id: 'booking', label: 'Booking Logic', icon: Calendar },
     { id: 'security', label: 'Security', icon: Shield },
+    { id: 'global', label: 'Global Infra', icon: Globe },
 ];
 
 const content = {
@@ -15,7 +16,7 @@ const content = {
         title: "The Neural Core",
         description: "Our IntentParser engine combines rule-based precision with fuzzy logic to understand natural language with 95% accuracy.",
         features: [
-            { title: "Fuzzy Logic & Entity Boosting", desc: "Typos? No problem. 'Groomng for Max' is recognized instantly. Detected entities boost intent confidence." },
+            { title: "Predictive Engine", desc: "Suggests 'Quick Actions' based on user history (e.g., 'Repeat Last Booking')." },
             { title: "Sentiment Adaptation", desc: "The bot detects frustration or anxiety and adapts its tone in real-time." }
         ],
         codeTitle: "intentParser.js (Neural Core)",
@@ -38,52 +39,54 @@ if (lower.includes('angry') || lower.includes('worst')) {
     },
     ui: {
         title: "Fluid Motion & SEO",
-        description: "We don't just move things; we choreograph them. Using GSAP and Framer Motion for 60fps experiences.",
+        description: "We don't just move things; we choreograph them. Using GSAP and Framer Motion for 60fps experiences, backed by a robust SEO engine.",
         features: [
-            { title: "ScrollTrigger Precision", desc: "Animations fire exactly when they enter the viewport, creating a storytelling experience." },
-            { title: "Tailwind Architecture", desc: "Utility-first styling ensures consistency and reduces bundle size." }
+            { title: "Dynamic SEO", desc: "Unique titles and meta tags for every route (e.g., 'Dog Hotel' vs 'Cat Hotel')." },
+            { title: "Engagement Engine", desc: "Social proof components (Stats, Testimonials) designed to drive conversion." }
         ],
-        codeTitle: "Animation Logic",
-        code: `// GSAP / Framer Motion Implementation
-<motion.div
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-100px" }}
-  transition={{ duration: 0.8, ease: "easeOut" }}
->
-  <FeatureCard />
-</motion.div>
-
-// Tailwind Utility Classes
-<button className="group p-8 rounded-2xl 
-  border-2 border-white/10 
-  hover:border-neon-500 
-  hover:bg-neon-500/10 
-  transition-all duration-300">`
+        codeTitle: "SEOManager.js",
+        code: `// 1. Route Detection
+const updateSEO = (view) => {
+  const config = SEO_CONFIG[view];
+  
+  // 2. Dynamic Title
+  document.title = config.title;
+  
+  // 3. Meta Tags
+  document.querySelector('meta[name="description"]')
+    .setAttribute('content', config.description);
+    
+  // 4. Open Graph
+  updateOGTags(config);
+}`
     },
     admin: {
-        title: "Mission Control",
-        description: "A secure, intelligent panel to manage bookings, analyze AI conversations, and test communications.",
+        title: "Content Engine (CMS)",
+        description: "A serverless content management system that injects updates instantly without rebuilding the application.",
         features: [
-            { title: "Email Simulation Engine", desc: "Generates complex scenarios (e.g., 'Difficult Customer') to test notification templates." },
-            { title: "Deep Learning Analytics", desc: "Visual Confusion Matrices and Sentiment Trend Analysis." }
+            { title: "Live Content Injection", desc: "Update prices, banners, and text in real-time via Vercel KV. Zero build time required." },
+            { title: "No-Build Updates", desc: "Marketing teams can modify the site without developer intervention or git commits." }
         ],
-        codeTitle: "Simulation Engine Output",
-        code: `{
-  "scenario": "difficult_customer",
-  "red_flags": [
-    { "type": "Negative Sentiment", "msg": "Too expensive" },
-    { "type": "Policy Violation", "msg": "Can I pay later?" }
-  ],
-  "outcome": "confirmed",
-  "confidence": 0.94
+        codeTitle: "api/content.js (Serverless CMS)",
+        code: `// POST: Update Content (Protected)
+if (req.method === 'POST') {
+  const { content } = req.body;
+  
+  // 1. Persist to Edge Store
+  await kv.set('site_content', content);
+  
+  // 2. Instant Cache Invalidation
+  return res.status(200).json({ 
+    success: true, 
+    message: 'Content injected to Edge' 
+  });
 }`
     },
     booking: {
         title: "Context-Aware Booking",
         description: "A hybrid engine combining structured forms with natural language and historical memory.",
         features: [
-            { title: "Historical Intelligence", desc: "Instantly retrieves previous preferences. 'Same as last time' auto-fills the form." },
+            { title: "Context Switching", desc: "Interrupt a booking to ask a question. The bot saves state and resumes seamlessly." },
             { title: "Strict Schema Validation", desc: "Every input is sanitized and validated against rigorous Zod-like schemas." }
         ],
         codeTitle: "BookingSlotManager.js",
@@ -104,24 +107,49 @@ if (lower.includes('angry') || lower.includes('worst')) {
 }`
     },
     security: {
-        title: "Fortified Architecture",
-        description: "Defense-in-depth from day one. AES encryption, Bcrypt hashing, and zero-trust infrastructure.",
+        title: "Zero-Trust Architecture",
+        description: "We assume every request is hostile until proven otherwise. A multi-layered defense system protecting data at rest and in transit.",
         features: [
-            { title: "Secure Local Storage", desc: "Data is AES-256 encrypted before it ever touches the browser's disk." },
-            { title: "Zero-Trust Auth", desc: "Passwords are never hashed on the client. Server-side Bcrypt verification only." }
+            { title: "Active Session Monitoring", desc: "Automatic 30-minute idle timeout. Mouse movements and keystrokes reset the secure timer." },
+            { title: "Heuristic Neutralization", desc: "Recursive input sanitization strips malicious code before it touches the core." }
         ],
-        codeTitle: "SecureStorage.js",
-        code: `setItem(key, value) {
-  const encrypted = CryptoJS.AES.encrypt(
-    JSON.stringify(value), 
-    this.secretKey
-  ).toString();
-  
-  localStorage.setItem(key, encrypted);
-}
+        codeTitle: "useAdminAuth.js (Session Logic)",
+        code: `// 1. Session Timeout (30m)
+const TIMEOUT_DURATION = 30 * 60 * 1000;
 
-// Result in Browser:
-// "U2FsdGVkX1+..." (Unreadable garbage)`
+const resetTimer = () => {
+  clearTimeout(timeout);
+  // Auto-logout if idle
+  timeout = setTimeout(logout, TIMEOUT_DURATION);
+};
+
+// 2. Activity Watchdog
+const events = ['mousemove', 'keydown', 'click'];
+events.forEach(e => 
+  window.addEventListener(e, resetTimer)
+);`
+    },
+    global: {
+        title: "Planetary-Scale Edge Mesh",
+        description: "Your application doesn't live on a server; it lives everywhere. Deployed to 18+ regions simultaneously for sub-50ms latency worldwide.",
+        features: [
+            { title: "Anycast Routing", desc: "Requests are automatically routed to the nearest physical data center, regardless of where the user is." },
+            { title: "Infinite Scalability", desc: "Serverless architecture scales from 10 to 10M users instantly with zero configuration." }
+        ],
+        codeTitle: "vercel.json (Edge Config)",
+        code: `{
+  "regions": ["sfo1", "iad1", "lhr1", "hnd1"],
+  "framework": "vite",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "s-maxage=31536000" },
+        { "key": "X-Frame-Options", "value": "DENY" }
+      ]
+    }
+  ]
+}`
     }
 };
 
@@ -148,8 +176,8 @@ const DeepDiveShowcase = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-mono transition-all duration-300 border ${activeTab === tab.id
-                                    ? 'bg-neon-500/10 border-neon-500 text-neon-400 shadow-[0_0_20px_rgba(74,222,128,0.2)]'
-                                    : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:border-white/20'
+                                ? 'bg-neon-500/10 border-neon-500 text-neon-400 shadow-[0_0_20px_rgba(74,222,128,0.2)]'
+                                : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:border-white/20'
                                 }`}
                         >
                             <tab.icon size={18} />

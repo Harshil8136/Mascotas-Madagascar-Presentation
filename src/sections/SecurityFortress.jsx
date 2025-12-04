@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Shield, Lock, Key, Eye, FileCheck, ScanLine } from 'lucide-react';
+import { Shield, Lock, Key, Eye } from 'lucide-react';
 
 const SecurityFeature = ({ icon: Icon, title, desc, delay }) => (
     <motion.div
@@ -132,38 +132,44 @@ const SecurityFortress = () => {
                                 <Shield size={120} className="text-neon-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)] relative z-20" />
                             </motion.div>
 
-                            {/* Floating Badges */}
+                            {/* Live Security Terminal */}
                             <motion.div
                                 style={{ transform: "translateZ(80px)" }}
-                                animate={{ y: [0, -10, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -top-6 -right-6 bg-forest-800 border border-neon-500/30 px-4 py-2 rounded-lg shadow-xl backdrop-blur-xl"
+                                className="absolute -bottom-12 -right-12 bg-[#0d1117] border border-neon-500/30 rounded-xl p-4 shadow-2xl w-64 font-mono text-[10px] overflow-hidden"
                             >
-                                <div className="flex items-center gap-2 text-xs font-mono text-neon-400">
-                                    <Lock size={12} />
-                                    <span>AES-256</span>
+                                <div className="flex items-center gap-2 mb-2 border-b border-white/10 pb-2">
+                                    <div className="w-2 h-2 rounded-full bg-red-500" />
+                                    <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                                    <span className="text-gray-500 ml-auto">LIVE_LOGS</span>
                                 </div>
-                            </motion.div>
-
-                            <motion.div
-                                style={{ transform: "translateZ(80px)" }}
-                                animate={{ y: [0, 10, 0] }}
-                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                                className="absolute -bottom-6 -left-6 bg-forest-800 border border-neon-500/30 px-4 py-2 rounded-lg shadow-xl backdrop-blur-xl"
-                            >
-                                <div className="flex items-center gap-2 text-xs font-mono text-neon-400">
-                                    <FileCheck size={12} />
-                                    <span>GDPR Ready</span>
+                                <div className="space-y-1 text-neon-400/80">
+                                    <motion.div
+                                        animate={{ opacity: [0, 1, 1, 0] }}
+                                        transition={{ duration: 4, repeat: Infinity, times: [0, 0.1, 0.9, 1] }}
+                                    >
+                                        {'> INIT_SESSION_TIMER... [30m]'}
+                                    </motion.div>
+                                    <motion.div
+                                        animate={{ opacity: [0, 1, 1, 0] }}
+                                        transition={{ duration: 4, repeat: Infinity, delay: 1, times: [0, 0.1, 0.9, 1] }}
+                                    >
+                                        {'> MONITORING_ACTIVITY... [ACTIVE]'}
+                                    </motion.div>
+                                    <motion.div
+                                        animate={{ opacity: [0, 1, 1, 0] }}
+                                        transition={{ duration: 4, repeat: Infinity, delay: 2, times: [0, 0.1, 0.9, 1] }}
+                                    >
+                                        {'> VERIFYING_SIGNATURE... [VALID]'}
+                                    </motion.div>
+                                    <motion.div
+                                        animate={{ opacity: [0, 1, 1, 0] }}
+                                        transition={{ duration: 4, repeat: Infinity, delay: 3, times: [0, 0.1, 0.9, 1] }}
+                                        className="text-white"
+                                    >
+                                        {'> SYSTEM_SECURE'}
+                                    </motion.div>
                                 </div>
-                            </motion.div>
-
-                            {/* Scan Status */}
-                            <motion.div
-                                style={{ transform: "translateZ(60px)" }}
-                                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/50 px-3 py-1 rounded-full border border-neon-500/20"
-                            >
-                                <div className="w-2 h-2 bg-neon-500 rounded-full animate-pulse" />
-                                <span className="text-[10px] font-mono text-neon-400 uppercase tracking-widest">System Secure</span>
                             </motion.div>
 
                         </motion.div>
@@ -187,20 +193,20 @@ const SecurityFortress = () => {
                         <div className="grid gap-4">
                             <SecurityFeature
                                 icon={Key}
-                                title="JWT Authentication"
-                                desc="Stateless, secure session management ensuring zero unauthorized access to admin routes."
+                                title="Zero-Trust Session Architecture"
+                                desc="Stateless JWTs with automatic 30-minute idle timeout. We verify every request, every time."
                                 delay={0.2}
                             />
                             <SecurityFeature
                                 icon={Eye}
-                                title="Input Sanitization"
-                                desc="Custom heuristic engine (Sanitizer.js) strips malicious code before it ever touches the server."
+                                title="Heuristic Threat Neutralization"
+                                desc="Advanced sanitization engine (xss) recursively strips malicious payloads before they reach the core."
                                 delay={0.4}
                             />
                             <SecurityFeature
                                 icon={Lock}
-                                title="Helmet.js Headers"
-                                desc="Advanced HTTP header configuration preventing XSS, clickjacking, and other common attack vectors."
+                                title="Helmet.js Shielding"
+                                desc="Hardened HTTP headers preventing XSS, clickjacking, and other common attack vectors."
                                 delay={0.6}
                             />
                         </div>

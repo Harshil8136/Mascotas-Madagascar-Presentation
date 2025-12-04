@@ -142,9 +142,9 @@ const ChatbotIntelligence = () => {
                                 <Zap size={24} />
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold text-white mb-2">Zero-Cost Architecture</h3>
+                                <h3 className="text-xl font-bold text-white mb-2">Predictive Engine</h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Unlike OpenAI wrappers that cost per token, our solution runs entirely in the browser using <span className="text-white font-mono">Fuse.js</span> and Regex heuristics. Infinite scale, zero marginal cost.
+                                    Analyzes past behavior to suggest "Quick Actions" (e.g., "Book Grooming for Max again?"), reducing friction by 80%.
                                 </p>
                             </div>
                         </motion.div>
@@ -159,9 +159,9 @@ const ChatbotIntelligence = () => {
                                 <GitBranch size={24} />
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold text-white mb-2">State Machine Logic</h3>
+                                <h3 className="text-xl font-bold text-white mb-2">Context Switching</h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Powered by <span className="text-white font-mono">FlowStackManager</span>, the bot handles context switching gracefully. Interrupt a booking to ask a question, and it resumes exactly where you left off.
+                                    Powered by <span className="text-white font-mono">FlowStackManager</span>. Interrupt a booking to ask a question, and the bot resumes exactly where you left off.
                                 </p>
                             </div>
                         </motion.div>
@@ -176,9 +176,9 @@ const ChatbotIntelligence = () => {
                                 <Layers size={24} />
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold text-white mb-2">Bilingual Native</h3>
+                                <h3 className="text-xl font-bold text-white mb-2">Adaptive Proactive System</h3>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Dual-core processing with <span className="text-white font-mono">fuseInstanceEn</span> and <span className="text-white font-mono">fuseInstanceEs</span> ensures native-level understanding in English and Spanish without translation lag.
+                                    Detects frustration or confusion and adjusts wait times dynamically. If you're stuck, it offers help before you even ask.
                                 </p>
                             </div>
                         </motion.div>

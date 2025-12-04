@@ -31,13 +31,32 @@ export const systemModules = [
         stats: { label: 'Uptime', value: '99.99%' },
         details: {
             techStack: [
-                { name: 'Vercel KV (Redis)', desc: 'Edge State Management' },
-                { name: 'Dual-Email Protocol', desc: 'Parallel Dispatch System' },
-                { name: 'NodeMailer', desc: 'Transactional Transport' }
+                { name: 'FlowStackManager', desc: 'Context Switching' },
+                { name: 'Circuit Breaker', desc: 'Error Recovery' },
+                { name: 'Vercel KV', desc: 'Edge State' }
             ],
             businessBenefit: 'Zero-latency booking processing. The "Dual-Email" system ensures you get rich analytics while the customer gets a clean confirmation instantly.',
             industryBenchmark: 'Competitors use synchronous PHP mailers that block the UI. We use asynchronous Edge Functions with Redis caching for <50ms response times.',
             securityPerf: 'Serverless Edge Functions scale infinitely with zero cold-start latency.'
+        }
+    },
+    {
+        id: 'admin-core',
+        title: 'Admin Console',
+        subtitle: 'Operational Command Center',
+        icon: Database,
+        color: 'text-pink-400',
+        bgGradient: 'from-pink-900/50 to-pink-950/80',
+        stats: { label: 'Efficiency', value: '10x' },
+        details: {
+            techStack: [
+                { name: 'Vercel KV', desc: 'Content Store' },
+                { name: 'React Context', desc: 'State Hydration' },
+                { name: 'Preact', desc: 'Zero-Build UI' }
+            ],
+            businessBenefit: 'Empowers non-technical staff to update prices and banners instantly. Full offline capability ensures business continuity.',
+            industryBenchmark: 'Most admin panels require constant server connection. Ours works offline and syncs when back online.',
+            securityPerf: 'Role-based access control with strict session timeouts.'
         }
     },
     {
@@ -50,9 +69,9 @@ export const systemModules = [
         stats: { label: 'Lighthouse', value: '100' },
         details: {
             techStack: [
-                { name: 'Vercel Speed Insights', desc: 'Real User Monitoring (RUM)' },
-                { name: 'Sharp', desc: 'Next-Gen Image Optimization' },
-                { name: 'Critical CSS', desc: 'Above-the-Fold Inlining' }
+                { name: 'Critical CSS', desc: 'LCP Optimization' },
+                { name: 'Dynamic SEO', desc: 'Meta Tag Management' },
+                { name: 'Sharp', desc: 'Image Optimization' }
             ],
             businessBenefit: 'Direct correlation to conversion rates. Every 100ms saved increases revenue by 1%. Our architecture guarantees sub-second First Contentful Paint.',
             industryBenchmark: 'Average pet site loads in 3.5s. Mascotas Madagascar loads in 0.8s due to aggressive asset optimization and edge caching.',
@@ -107,7 +126,8 @@ export const systemModules = [
         details: {
             techStack: [
                 { name: 'Vercel Edge Network', desc: 'Global CDN' },
-                { name: 'Anycast DNS', desc: 'Latency Routing' }
+                { name: 'Anycast DNS', desc: 'Latency Routing' },
+                { name: 'DDoS Mitigation', desc: 'Platform Security' }
             ],
             businessBenefit: 'Your digital asset lives "everywhere" simultaneously. A user in Mexico City hits a local node, not a server in Virginia.',
             industryBenchmark: 'Standard hosting is centralized (Single Point of Failure). We are distributed, ensuring 100% availability even during regional outages.',
