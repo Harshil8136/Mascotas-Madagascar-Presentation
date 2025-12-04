@@ -51,7 +51,9 @@ const PipelineNode = ({ data, isActive, isPassed, onClick, isMobile }) => (
         </motion.div>
 
         {/* Label */}
-        <motion.div layout className={`${isMobile ? 'flex flex-col justify-center' : 'text-center absolute top-20 w-32 left-1/2 -translate-x-1/2'}`}>
+        <motion.div
+            className={`${isMobile ? 'flex flex-col justify-center' : 'text-center absolute top-20 w-48 left-1/2 -translate-x-1/2'}`}
+        >
             <h3 className={`font-bold font-display transition-colors duration-300 ${isActive ? 'text-white text-lg' : 'text-gray-500 text-sm'}`}>
                 {data.title}
             </h3>

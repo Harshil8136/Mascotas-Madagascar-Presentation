@@ -7,7 +7,10 @@ const Counter = ({ value, label, color }) => {
 
     useEffect(() => {
         let start = 0;
-        const end = parseInt(value.substring(0, value.length - 1)) || 0; // Handle "98%" or "10k"
+        // Extract number and unit
+        const end = parseFloat(value) || 0;
+        const unit = value.replace(/[0-9.]/g, '');
+
         const duration = 2000;
         const increment = end / (duration / 16);
 
@@ -17,17 +20,21 @@ const Counter = ({ value, label, color }) => {
                 setCount(end);
                 clearInterval(timer);
             } else {
-                setCount(Math.floor(start));
+                // If it's an integer, show integer, else show 1 decimal
+                setCount(Number.isInteger(end) ? Math.floor(start) : parseFloat(start.toFixed(1)));
             }
         }, 16);
 
         return () => clearInterval(timer);
     }, [value]);
 
+    // Extract unit for display
+    const unit = value.replace(/[0-9.]/g, '');
+
     return (
         <div className="p-6 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-sm text-center group hover:border-neon-500/30 transition-colors">
             <div className={`text-4xl font-mono font-bold mb-2 ${color}`}>
-                {count}{value.includes('%') ? '%' : value.includes('k') ? 'k' : ''}
+                {count}{unit}
             </div>
             <div className="text-sm text-gray-400 uppercase tracking-wider">{label}</div>
         </div>
@@ -106,7 +113,7 @@ const AnalyticsDashboard = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
                     <Counter value="98%" label="Intent Accuracy" color="text-neon-400" />
                     <Counter value="12k" label="Messages Processed" color="text-blue-400" />
-                    <Counter value="0.4s" label="Avg Response Time" color="text-yellow-400" />
+                    <Counter value="400ms" label="Avg Response Time" color="text-yellow-400" />
                     <Counter value="100%" label="Uptime" color="text-green-400" />
                 </div>
 
