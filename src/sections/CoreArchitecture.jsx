@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Server, Database, Globe, Cpu, Code2, Zap } from 'lucide-react';
+import useMobile from '../hooks/useMobile';
 
-const Connector = ({ isFilled }) => (
-    <div className="flex-1 h-[2px] bg-white/10 relative mx-2 overflow-hidden rounded-full">
+const Connector = ({ isFilled, isVertical }) => (
+    <div className={`flex-1 ${isVertical ? 'w-[2px] h-8 my-[-8px] ml-[31px]' : 'h-[2px] mx-2'} bg-white/10 relative overflow-hidden rounded-full z-0`}>
         <motion.div
-            initial={{ x: '-100%' }}
-            animate={{
+            initial={isVertical ? { y: '-100%' } : { x: '-100%' }}
+            animate={isVertical ? {
+                y: isFilled ? '0%' : '-100%',
+                opacity: isFilled ? 1 : 0
+            } : {
                 x: isFilled ? '0%' : '-100%',
                 opacity: isFilled ? 1 : 0
             }}
@@ -16,16 +20,16 @@ const Connector = ({ isFilled }) => (
     </div>
 );
 
-const PipelineNode = ({ data, isActive, isPassed, onClick }) => (
+const PipelineNode = ({ data, isActive, isPassed, onClick, isMobile }) => (
     <motion.div
         layout
         onClick={onClick}
-        className={`relative flex flex-col items-center gap-4 cursor-pointer group z-10`}
+        className={`relative flex ${isMobile ? 'flex-row w-full text-left gap-6 p-4' : 'flex-col items-center gap-4'} cursor-pointer group z-10`}
     >
         {/* Node Icon */}
         <motion.div
             layout
-            className={`w-16 h-16 rounded-2xl flex items-center justify-center border-2 transition-all duration-300 relative
+            className={`w-16 h-16 rounded-2xl flex items-center justify-center border-2 transition-all duration-300 relative shrink-0
                 ${isActive
                     ? 'bg-forest-900 border-neon-500 text-neon-400 shadow-[0_0_30px_rgba(74,222,128,0.3)] scale-110'
                     : isPassed
@@ -47,7 +51,7 @@ const PipelineNode = ({ data, isActive, isPassed, onClick }) => (
         </motion.div>
 
         {/* Label */}
-        <motion.div layout className="text-center absolute top-20 w-32 left-1/2 -translate-x-1/2">
+        <motion.div layout className={`${isMobile ? 'flex flex-col justify-center' : 'text-center absolute top-20 w-32 left-1/2 -translate-x-1/2'}`}>
             <h3 className={`font-bold font-display transition-colors duration-300 ${isActive ? 'text-white text-lg' : 'text-gray-500 text-sm'}`}>
                 {data.title}
             </h3>
@@ -118,6 +122,7 @@ const DetailCard = ({ data }) => (
 const CoreArchitecture = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+    const isMobile = useMobile();
 
     const nodes = [
         {
@@ -204,7 +209,7 @@ const CoreArchitecture = () => {
                     onMouseEnter={() => setIsAutoPlaying(false)}
                     onMouseLeave={() => setIsAutoPlaying(true)}
                 >
-                    <div className="flex items-center justify-between">
+                    <div className={`flex ${isMobile ? 'flex-col' : 'items-center justify-between'}`}>
                         {nodes.map((node, index) => (
                             <React.Fragment key={node.id}>
                                 <PipelineNode
@@ -212,10 +217,12 @@ const CoreArchitecture = () => {
                                     isActive={index === activeIndex}
                                     isPassed={index < activeIndex}
                                     onClick={() => setActiveIndex(index)}
+                                    isMobile={isMobile}
                                 />
                                 {index < nodes.length - 1 && (
                                     <Connector
                                         isFilled={index < activeIndex}
+                                        isVertical={isMobile}
                                     />
                                 )}
                             </React.Fragment>
@@ -224,7 +231,7 @@ const CoreArchitecture = () => {
                 </div>
 
                 {/* Detail Panel */}
-                <div className="h-[400px] flex items-start justify-center">
+                <div className="min-h-[400px] flex items-start justify-center">
                     <AnimatePresence mode="wait">
                         <DetailCard key={nodes[activeIndex].id} data={nodes[activeIndex]} />
                     </AnimatePresence>

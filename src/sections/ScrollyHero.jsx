@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
+import useMobile from '../hooks/useMobile';
 
 const ScrollyHero = () => {
     const ref = useRef(null);
@@ -12,11 +13,14 @@ const ScrollyHero = () => {
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
+    const isMobile = useMobile();
+
     // Mouse Tilt Effect
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
     const handleMouseMove = (e) => {
+        if (isMobile) return;
         const { clientX, clientY, currentTarget } = e;
         const { width, height, left, top } = currentTarget.getBoundingClientRect();
 
@@ -32,6 +36,11 @@ const ScrollyHero = () => {
 
     const brightness = useTransform(mouseY, [-0.5, 0.5], [1.2, 0.8]);
     const gradientBg = useMotionTemplate`radial-gradient(circle at ${useTransform(mouseX, x => x * 100 + 50)}% ${useTransform(mouseY, y => y * 100 + 50)}%, rgba(74, 222, 128, 0.15), transparent 50%)`;
+
+    // Mobile overrides
+    const finalRotateX = isMobile ? 0 : rotateX;
+    const finalRotateY = isMobile ? 0 : rotateY;
+    const finalBrightness = isMobile ? 1 : brightness;
 
     return (
         <section
@@ -53,9 +62,9 @@ const ScrollyHero = () => {
             {/* 3D Tilt Container */}
             <motion.div
                 style={{
-                    rotateX,
-                    rotateY,
-                    filter: useMotionTemplate`brightness(${brightness})`
+                    rotateX: finalRotateX,
+                    rotateY: finalRotateY,
+                    filter: useMotionTemplate`brightness(${finalBrightness})`
                 }}
                 className="relative z-10 container mx-auto px-6 text-center transform-style-3d"
             >
@@ -94,7 +103,7 @@ const ScrollyHero = () => {
                         Mascotas Madagascar
                     </h2>
 
-                    <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold leading-tight mb-8 text-white mix-blend-screen">
+                    <h1 className="text-4xl md:text-8xl lg:text-9xl font-display font-bold leading-tight mb-8 text-white mix-blend-screen">
                         Beyond a <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
                             Pet Store.

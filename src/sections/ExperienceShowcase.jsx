@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Layers, Code, MousePointer2, LayoutTemplate, Box } from 'lucide-react';
+import { Layers, Code, MousePointer2, LayoutTemplate, Box, TouchpadOff } from 'lucide-react';
+import useMobile from '../hooks/useMobile';
 
 const ExperienceShowcase = () => {
     const [isHovered, setIsHovered] = useState(false);
     const containerRef = useRef(null);
+    const isMobile = useMobile();
 
     // Mouse position for 3D tilt
     const x = useMotionValue(0);
@@ -17,7 +19,7 @@ const ExperienceShowcase = () => {
     const rotateY = useTransform(mouseX, [-0.5, 0.5], [-15, 15]);
 
     const handleMouseMove = (e) => {
-        if (!containerRef.current) return;
+        if (isMobile || !containerRef.current) return;
         const rect = containerRef.current.getBoundingClientRect();
         const width = rect.width;
         const height = rect.height;
@@ -30,10 +32,20 @@ const ExperienceShowcase = () => {
     };
 
     const handleMouseLeave = () => {
+        if (isMobile) return;
         setIsHovered(false);
         x.set(0);
         y.set(0);
     };
+
+    const toggleDeconstruct = () => {
+        if (!isMobile) return;
+        setIsHovered(!isHovered);
+    };
+
+    // Mobile overrides
+    const finalRotateX = isMobile ? 0 : rotateX;
+    const finalRotateY = isMobile ? 0 : rotateY;
 
     return (
         <section className="min-h-screen bg-forest-900 py-24 relative overflow-hidden perspective-2000">
@@ -63,13 +75,14 @@ const ExperienceShowcase = () => {
                 <div
                     ref={containerRef}
                     className="relative w-full max-w-5xl aspect-[16/9] cursor-pointer"
-                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseEnter={() => !isMobile && setIsHovered(true)}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
+                    onClick={toggleDeconstruct}
                     style={{ perspective: '2000px' }}
                 >
                     <motion.div
-                        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+                        style={{ rotateX: finalRotateX, rotateY: finalRotateY, transformStyle: 'preserve-3d' }}
                         className="relative w-full h-full"
                     >
 
@@ -213,8 +226,8 @@ const ExperienceShowcase = () => {
                                         transition={{ repeat: Infinity, duration: 2 }}
                                         className="bg-black/80 text-white px-6 py-3 rounded-full border border-white/20 flex items-center gap-2 shadow-xl"
                                     >
-                                        <MousePointer2 size={16} />
-                                        <span className="text-sm font-medium">Hover to Deconstruct</span>
+                                        {isMobile ? <TouchpadOff size={16} /> : <MousePointer2 size={16} />}
+                                        <span className="text-sm font-medium">{isMobile ? "Tap to Deconstruct" : "Hover to Deconstruct"}</span>
                                     </motion.div>
                                 </div>
                             )}
