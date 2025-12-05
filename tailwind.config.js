@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         forest: {
+          950: '#051208', // Darkest green for deep backgrounds
           900: '#0a1f12', // Deepest green
           800: '#143320',
           700: '#1e472e',
@@ -28,13 +29,19 @@ export default {
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 6s ease-in-out infinite',
+        'float': 'float 8s ease-in-out infinite',
+        'spin-slow': 'spin 25s linear infinite',
+        'scan': 'scan 3s linear infinite',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
-        }
+          '50%': { transform: 'translateY(-15px)' },
+        },
+        scan: {
+          '0%': { top: '-10%' },
+          '100%': { top: '110%' },
+        },
       },
       boxShadow: {
         'glow': '0 0 20px rgba(74, 222, 128, 0.5)',

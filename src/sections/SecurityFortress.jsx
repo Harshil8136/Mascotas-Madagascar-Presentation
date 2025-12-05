@@ -1,47 +1,42 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Shield, Lock, Key, Eye } from 'lucide-react';
+import { Shield, Lock, Key, Eye, ShieldCheck } from 'lucide-react';
 
-const SecurityFeature = ({ icon: Icon, title, desc, delay }) => (
+// Simple security feature card
+const SecurityFeature = React.memo(({ icon: Icon, title, desc, delay }) => (
     <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay }}
-        className="flex items-start gap-4 p-6 bg-white/5 rounded-2xl border border-white/5 hover:border-neon-500/30 transition-colors group"
+        transition={{ delay, duration: 0.4 }}
+        className="flex items-start gap-4 p-6 bg-white/[0.03] rounded-2xl border border-white/5 hover:border-neon-500/30 transition-colors group cursor-pointer"
     >
-        <div className="p-3 bg-forest-800 rounded-xl text-neon-500 group-hover:scale-110 transition-transform">
+        <div className="p-3 bg-forest-800 rounded-xl text-neon-500 group-hover:scale-105 transition-transform">
             <Icon size={24} />
         </div>
         <div>
-            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+            <h3 className="text-lg font-bold text-white mb-2 group-hover:text-neon-400 transition-colors">{title}</h3>
             <p className="text-sm text-gray-400 leading-relaxed">{desc}</p>
         </div>
     </motion.div>
-);
+));
 
 const SecurityFortress = () => {
     const containerRef = useRef(null);
 
-    // Mouse tilt logic
+    // Mouse tilt logic - simplified
     const x = useMotionValue(0);
     const y = useMotionValue(0);
-    const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
-    const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
-    const rotateX = useTransform(mouseY, [-0.5, 0.5], [15, -15]);
-    const rotateY = useTransform(mouseX, [-0.5, 0.5], [-15, 15]);
+    const mouseX = useSpring(x, { stiffness: 100, damping: 20 });
+    const mouseY = useSpring(y, { stiffness: 100, damping: 20 });
+    const rotateX = useTransform(mouseY, [-0.5, 0.5], [10, -10]);
+    const rotateY = useTransform(mouseX, [-0.5, 0.5], [-10, 10]);
 
     const handleMouseMove = (e) => {
         if (!containerRef.current) return;
         const rect = containerRef.current.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseXVal = e.clientX - rect.left;
-        const mouseYVal = e.clientY - rect.top;
-        const xPct = mouseXVal / width - 0.5;
-        const yPct = mouseYVal / height - 0.5;
-        x.set(xPct);
-        y.set(yPct);
+        x.set((e.clientX - rect.left) / rect.width - 0.5);
+        y.set((e.clientY - rect.top) / rect.height - 0.5);
     };
 
     const handleMouseLeave = () => {
@@ -50,165 +45,108 @@ const SecurityFortress = () => {
     };
 
     return (
-        <section className="min-h-screen bg-forest-950 relative flex items-center justify-center py-24 overflow-hidden perspective-1000">
-
-            {/* Background Particles */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {[...Array(20)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute w-1 h-1 bg-neon-500/20 rounded-full"
-                        initial={{
-                            x: Math.random() * 100 + "%",
-                            y: Math.random() * 100 + "%",
-                            opacity: 0
-                        }}
-                        animate={{
-                            y: [null, Math.random() * -100 + "%"],
-                            opacity: [0, 1, 0]
-                        }}
-                        transition={{
-                            duration: Math.random() * 10 + 10,
-                            repeat: Infinity,
-                            ease: "linear"
-                        }}
-                    />
-                ))}
+        <section className="min-h-screen bg-forest-950 relative flex items-center justify-center py-24 overflow-hidden">
+            {/* Simple grid background - CSS only */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#4ade8010_1px,transparent_1px),linear-gradient(to_bottom,#4ade8010_1px,transparent_1px)] bg-[size:60px_60px]" />
             </div>
 
-            {/* Background Abstract */}
+            {/* Simple rotating circles - CSS animation */}
             <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-                    className="w-[800px] h-[800px] border-[1px] border-dashed border-neon-500 rounded-full"
-                />
-                <motion.div
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                    className="absolute w-[600px] h-[600px] border-[1px] border-neon-500/30 rounded-full"
-                />
+                <div className="w-[600px] h-[600px] border border-dashed border-neon-500 rounded-full animate-spin-slow" />
+                <div className="absolute w-[400px] h-[400px] border border-neon-500/30 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
             </div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
 
-                    {/* Visual Side (Interactive Shield) */}
+                    {/* Visual Side (Shield) */}
                     <div
-                        className="lg:w-1/2 relative flex justify-center perspective-1000"
+                        className="lg:w-1/2 relative flex justify-center"
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
                         ref={containerRef}
+                        style={{ perspective: '1000px' }}
                     >
                         <motion.div
-                            style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            whileInView={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.8 }}
-                            className="relative w-80 h-96 cursor-pointer"
+                            style={{ rotateX, rotateY }}
+                            className="relative w-72 h-80 cursor-pointer will-change-transform"
                         >
-                            {/* Shield Layers */}
-                            <motion.div
-                                style={{ transform: "translateZ(20px)" }}
-                                className="absolute inset-0 bg-gradient-to-b from-neon-500/20 to-transparent rounded-[3rem] blur-xl"
-                            />
+                            {/* Shield glow */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-neon-500/15 to-transparent rounded-[3rem] blur-xl" />
 
-                            <motion.div
-                                style={{ transform: "translateZ(50px)" }}
-                                className="absolute inset-0 border-2 border-neon-500/50 rounded-[3rem] bg-forest-900/80 backdrop-blur-md flex items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(74,222,128,0.2)]"
-                            >
-                                {/* Scanning Laser Effect */}
-                                <motion.div
-                                    animate={{ top: ['-10%', '110%'] }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                                    className="absolute left-0 right-0 h-2 bg-neon-500/50 blur-md z-10"
-                                />
-                                <motion.div
-                                    animate={{ top: ['-10%', '110%'] }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                                    className="absolute left-0 right-0 h-[1px] bg-neon-400 z-10"
-                                />
+                            {/* Shield body */}
+                            <div className="absolute inset-0 border-2 border-neon-500/50 rounded-[3rem] bg-forest-900/80 backdrop-blur-sm flex items-center justify-center overflow-hidden shadow-[0_0_40px_rgba(74,222,128,0.15)]">
+                                {/* Scanning line - CSS animation */}
+                                <div className="absolute left-0 right-0 h-[1px] bg-neon-400 animate-scan" />
 
-                                <Shield size={120} className="text-neon-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)] relative z-20" />
-                            </motion.div>
+                                {/* Shield icon */}
+                                <Shield size={100} className="text-neon-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]" />
+                            </div>
 
-                            {/* Live Security Terminal */}
+                            {/* Terminal - simplified */}
                             <motion.div
-                                style={{ transform: "translateZ(80px)" }}
-                                className="absolute -bottom-12 -right-12 bg-[#0d1117] border border-neon-500/30 rounded-xl p-4 shadow-2xl w-64 font-mono text-[10px] overflow-hidden"
+                                className="absolute -bottom-10 -right-10 bg-[#0d1117] border border-neon-500/30 rounded-xl p-4 shadow-xl w-56 font-mono text-[10px]"
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.3 }}
                             >
                                 <div className="flex items-center gap-2 mb-2 border-b border-white/10 pb-2">
-                                    <div className="w-2 h-2 rounded-full bg-red-500" />
-                                    <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                                    <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                                    <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
                                     <div className="w-2 h-2 rounded-full bg-green-500" />
-                                    <span className="text-gray-500 ml-auto">LIVE_LOGS</span>
+                                    <span className="text-gray-500 ml-auto flex items-center gap-1">
+                                        <ShieldCheck size={10} />
+                                        LOGS
+                                    </span>
                                 </div>
                                 <div className="space-y-1 text-neon-400/80">
-                                    <motion.div
-                                        animate={{ opacity: [0, 1, 1, 0] }}
-                                        transition={{ duration: 4, repeat: Infinity, times: [0, 0.1, 0.9, 1] }}
-                                    >
-                                        {'> INIT_SESSION_TIMER... [30m]'}
-                                    </motion.div>
-                                    <motion.div
-                                        animate={{ opacity: [0, 1, 1, 0] }}
-                                        transition={{ duration: 4, repeat: Infinity, delay: 1, times: [0, 0.1, 0.9, 1] }}
-                                    >
-                                        {'> MONITORING_ACTIVITY... [ACTIVE]'}
-                                    </motion.div>
-                                    <motion.div
-                                        animate={{ opacity: [0, 1, 1, 0] }}
-                                        transition={{ duration: 4, repeat: Infinity, delay: 2, times: [0, 0.1, 0.9, 1] }}
-                                    >
-                                        {'> VERIFYING_SIGNATURE... [VALID]'}
-                                    </motion.div>
-                                    <motion.div
-                                        animate={{ opacity: [0, 1, 1, 0] }}
-                                        transition={{ duration: 4, repeat: Infinity, delay: 3, times: [0, 0.1, 0.9, 1] }}
-                                        className="text-white"
-                                    >
-                                        {'> SYSTEM_SECURE'}
-                                    </motion.div>
+                                    <div>{'> SESSION_TIMER [30m]'}</div>
+                                    <div>{'> ACTIVITY [ACTIVE]'}</div>
+                                    <div>{'> SIGNATURE [VALID]'}</div>
+                                    <div className="text-green-400">{'> SYSTEM_SECURE ✓'}</div>
                                 </div>
                             </motion.div>
-
                         </motion.div>
                     </div>
 
                     {/* Content Side */}
                     <div className="lg:w-1/2">
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neon-500/10 border border-neon-500/20 text-neon-400 text-sm font-mono mb-6"
+                        >
+                            <Lock size={14} />
+                            <span>Enterprise Security</span>
+                        </motion.div>
+
                         <motion.h2
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             className="text-4xl md:text-5xl font-display font-bold mb-6"
                         >
                             Bank-Grade <br />
                             <span className="text-gradient">Security Protocol</span>
                         </motion.h2>
 
-                        <p className="text-gray-400 text-lg mb-12 max-w-lg">
-                            We don't just store data; we fortify it. Every interaction is wrapped in layers of enterprise-grade encryption and validation logic.
-                        </p>
+                        <motion.p
+                            className="text-gray-400 text-lg mb-12 max-w-lg"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                        >
+                            Every interaction is wrapped in layers of enterprise-grade encryption and validation logic.
+                        </motion.p>
 
                         <div className="grid gap-4">
-                            <SecurityFeature
-                                icon={Key}
-                                title="Zero-Trust Session Architecture"
-                                desc="Stateless JWTs with automatic 30-minute idle timeout. We verify every request, every time."
-                                delay={0.2}
-                            />
-                            <SecurityFeature
-                                icon={Eye}
-                                title="Heuristic Threat Neutralization"
-                                desc="Advanced sanitization engine (xss) recursively strips malicious payloads before they reach the core."
-                                delay={0.4}
-                            />
-                            <SecurityFeature
-                                icon={Lock}
-                                title="Helmet.js Shielding"
-                                desc="Hardened HTTP headers preventing XSS, clickjacking, and other common attack vectors."
-                                delay={0.6}
-                            />
+                            <SecurityFeature icon={Key} title="Zero-Trust Sessions" desc="Stateless JWTs with automatic 30-minute idle timeout." delay={0.15} />
+                            <SecurityFeature icon={Eye} title="Threat Neutralization" desc="Advanced sanitization strips malicious payloads before they reach the core." delay={0.25} />
+                            <SecurityFeature icon={Lock} title="Helmet.js Shielding" desc="Hardened HTTP headers preventing XSS, clickjacking, and other attacks." delay={0.35} />
                         </div>
                     </div>
 
